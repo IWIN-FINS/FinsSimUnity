@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c0591bd7e032b763a03ca9d3409aaad, type: 3}
+  m_Name: DomainRandomizationProfile_LearningToSwimEquivalentBox
+  m_EditorClassIdentifier: LabustAssembly::Marus.Hydrodynamics.DomainRandomizationProfile
+  randomizeBody: 1
+  massScale: {min: 1, max: 1}
+  volumeScale: {min: 0.87288136, max: 1.12711864}
+  inertiaScale: {min: 1, max: 1}
+  coupleMassAndVolumeForNeutralBuoyancy: 0
+  buoyancyTrimScale: {min: 1, max: 1}
+  centerOfMassOffset: {min: {x: 0, y: 0, z: 0}, max: {x: 0, y: 0, z: 0}}
+  centerOfBuoyancyOffset: {min: {x: -0.05, y: -0.05, z: -0.05}, max: {x: 0.05, y: 0.05, z: 0.05}}
+  randomizeHydrodynamics: 0
+  addedMassScale: {min: 1, max: 1}
+  linearDampingScale: {min: 1, max: 1}
+  quadraticDampingScale: {min: 1, max: 1}
+  randomizeHydrodynamicAxisScales: 0
+  addedMassAxisScaleMin: {u: 1, v: 1, w: 1, p: 1, q: 1, r: 1}
+  addedMassAxisScaleMax: {u: 1, v: 1, w: 1, p: 1, q: 1, r: 1}
+  linearDampingAxisScaleMin: {u: 1, v: 1, w: 1, p: 1, q: 1, r: 1}
+  linearDampingAxisScaleMax: {u: 1, v: 1, w: 1, p: 1, q: 1, r: 1}
+  quadraticDampingAxisScaleMin: {u: 1, v: 1, w: 1, p: 1, q: 1, r: 1}
+  quadraticDampingAxisScaleMax: {u: 1, v: 1, w: 1, p: 1, q: 1, r: 1}
+  randomizeThrusters: 0
+  commonMaxForceScale: {min: 1, max: 1}
+  maxForceScale: {min: 1, max: 1}
+  forceConstantScale: {min: 1, max: 1}
+  timeConstantScale: {min: 1, max: 1}
+  delayScale: {min: 1, max: 1}
+  slewRateScale: {min: 1, max: 1}
+  randomizeWater: 0
+  currentSpeed: {min: 0, max: 0}
+  allowVerticalCurrent: 0
+  meanCurrent: {x: 0, y: 0, z: 0}
+  maxAngleFromMeanDegrees: 180
+  currentNoiseAmplitude: {min: {x: 0, y: 0, z: 0}, max: {x: 0, y: 0, z: 0}}
+  currentDriftTimeConstant: {min: 8, max: 30}
+  randomizeWaves: 0
+  waveComponentCount: {min: 0, max: 0}
+  waveAmplitude: {min: 0, max: 0}
+  waveWavelength: {min: 2.5, max: 12}
+  wavePeriod: {min: 2, max: 7}
+  waveDirectionDeg: {min: 0, max: 360}
+  randomizeWavePhase: 0
+  waveFlowScale: {min: 1, max: 1}
+  waveMaxFlowSpeed: {min: 0, max: 0}
+  randomizeInitialState: 0
+  initialPositionOffset: {min: {x: 0, y: 0, z: 0}, max: {x: 0, y: 0, z: 0}}
+  initialEulerOffsetDeg: {min: {x: 0, y: 0, z: 0}, max: {x: 0, y: 0, z: 0}}
+  initialLinearVelocity: {min: {x: 0, y: 0, z: 0}, max: {x: 0, y: 0, z: 0}}
+  initialAngularVelocity: {min: {x: 0, y: 0, z: 0}, max: {x: 0, y: 0, z: 0}}

@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34dcca84950939a7194296f3c9652cd5, type: 3}
+  m_Name: FinsROV_HydrodynamicsProfile
+  m_EditorClassIdentifier: LabustAssembly::Marus.Hydrodynamics.HydrodynamicsProfile
+  waterDensity: 1027
+  displacedVolume: 0.0118
+  gravityMagnitude: 9.81
+  assumeFullySubmerged: 1
+  surfaceTransitionHalfHeight: 0.5
+  applyCenterOfMassToRigidbody: 1
+  centerOfMass: {x: 0, y: -0.08, z: 0}
+  centerOfBuoyancy: {x: 0, y: 0.03, z: 0}
+  applyGravityWhenRigidbodyGravityDisabled: 1
+  linearDamping:
+    u: 20
+    v: 30
+    w: 40
+    p: 1
+    q: 1
+    r: 4
+  quadraticDamping:
+    u: 40
+    v: 80
+    w: 100
+    p: 2
+    q: 2
+    r: 8
+  forwardSpeedDamping:
+    u: 0
+    v: 0
+    w: 0
+    p: 0
+    q: 0
+    r: 0
+  useFullAddedMassMatrix: 0
+  addedMassDiagonal:
+    u: 5
+    v: 12
+    w: 14
+    p: 0.1
+    q: 0.1
+    r: 0.2
+  addedMassFull:
+    row0:
+      u: 0
+      v: 0
+      w: 0
+      p: 0
+      q: 0
+      r: 0
+    row1:
+      u: 0
+      v: 0
+      w: 0
+      p: 0
+      q: 0
+      r: 0
+    row2:
+      u: 0
+      v: 0
+      w: 0
+      p: 0
+      q: 0
+      r: 0
+    row3:
+      u: 0
+      v: 0
+      w: 0
+      p: 0
+      q: 0
+      r: 0
+    row4:
+      u: 0
+      v: 0
+      w: 0
+      p: 0
+      q: 0
+      r: 0
+    row5:
+      u: 0
+      v: 0
+      w: 0
+      p: 0
+      q: 0
+      r: 0
+  enableAddedMassForce: 1
+  enableAddedMassCoriolis: 1
+  accelerationFilterAlpha: 0.3
+  surfaceHydroMesh: {fileID: 0}
+  surfaceHydroMode: 1
+  maxSurfaceTriangles: 2500
+  clipTrianglesAtWaterSurface: 1
+  pressureBuoyancyScale: 1
+  formDragCoefficient: 1
+  skinDragCoefficient: 0.02
+  surfaceResidualScale: 0.25
+  minTriangleArea: 0.000001
+  maxForceMagnitude: 10000
+  maxTorqueMagnitude: 10000

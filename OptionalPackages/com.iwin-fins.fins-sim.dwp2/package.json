@@ -1,0 +1,10 @@
+{
+  "name": "com.iwin-fins.fins-sim.dwp2",
+  "version": "0.1.0",
+  "displayName": "FinsSim DWP2 Extension (Optional)",
+  "description": "Optional FinsSim adapter for user-installed NWH Dynamic Water Physics 2. This package does not redistribute DWP2 or its assets.",
+  "unity": "6000.0",
+  "author": {
+    "name": "IWIN-FINS"
+  }
+}

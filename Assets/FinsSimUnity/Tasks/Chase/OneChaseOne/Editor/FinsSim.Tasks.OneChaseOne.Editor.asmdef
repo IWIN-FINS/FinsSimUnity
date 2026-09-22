@@ -1,0 +1,33 @@
+{
+    "name": "FinsSim.Tasks.OneChaseOne.Editor",
+    "rootNamespace": "FinsSim.Tasks.OneChaseOne.Editor",
+    "references": [
+        "FinsSim.Tasks",
+        "FinsSim.Platform",
+        "FinsSim.Core",
+        "FinsSim.Diagnostics",
+        "NWH.Common",
+        "NWH.DWP2",
+        "Crest",
+        "Obi",
+        "PluginsAssembly",
+        "Unity.ML-Agents",
+        "Unity.ML-Agents.Input",
+        "Unity.InputSystem",
+        "Unity.Mathematics",
+        "Unity.RenderPipelines.HighDefinition.Runtime",
+        "Unity.RenderPipelines.HighDefinition.Editor",
+        "OpenSourceCloth"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

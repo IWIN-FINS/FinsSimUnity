@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="lauv">
+  <material name="blue">
+    <color rgba="0.0 0.0 0.8 1.0" />
+  </material>
+  <material name="green">
+    <color rgba="0.0 0.8 0.0 1.0" />
+  </material>
+  <material name="grey">
+    <color rgba="0.7 0.7 0.7 1.0" />
+  </material>
+  <material name="grey2">
+    <color rgba="0.9 0.9 0.9 1.0" />
+  </material>
+  <material name="red">
+    <color rgba="0.8 0.0 0.0 1.0" />
+  </material>
+  <material name="orange">
+    <color rgba="1.0 0.5 0.0 1.0" />
+  </material>
+  <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0" />
+  </material>
+  <material name="black">
+    <color rgba="0.05 0.05 0.05 1.0" />
+  </material>
+  <link name="lauv_base_link">
+    <inertial>
+      <mass value="18" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <inertia ixx="0.050624999999999996" ixy="0" ixz="0" iyy="1.7749124929003501" iyz="0" izz="1.7749124929003501" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/body.dae" scale="1 1 1" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      s
+          
+      <geometry>
+        <mesh filename="meshes/body.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="lauv_thruster_0">
+    <visual>
+      <geometry>
+        <mesh filename="meshes/propeller.dae" scale="1 1 1" />
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="0.001" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <inertia ixx="0.000000017" ixy="0.0" ixz="0.0" iyy="0.000000017" iyz="0.0" izz="0.000000017" />
+    </inertial>
+  </link>
+  <joint name="lauv_thruster_0_joint" type="continuous">
+    <origin rpy="0 0 3.141592653589793" xyz="-0.53994 0 0" />
+    <axis xyz="1 0 0" />
+    <parent link="lauv_base_link" />
+    <child link="lauv_thruster_0" />
+  </joint>
+  <joint name="lauv_fin0_joint" type="revolute">
+    <limit effort="0" lower="-1.5707961" upper="1.5707961" velocity="0" />
+    <origin rpy="0 0 0" xyz="-0.4 0 0.04" />
+    <axis xyz="0 0 1" />
+    <parent link="lauv_base_link" />
+    <child link="lauv_fin0" />
+  </joint>
+  <link name="lauv_fin0">
+    <inertial>
+      <mass value="0.0001" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/red_fin.dae" scale="1 1 1" />
+      </geometry>
+    </visual>
+  </link>
+  <joint name="lauv_fin1_joint" type="revolute">
+    <limit effort="0" lower="-1.5707961" upper="1.5707961" velocity="0" />
+    <origin rpy="1.5707963267948966 0 0" xyz="-0.4 -0.04 0" />
+    <axis xyz="0 0 1" />
+    <parent link="lauv_base_link" />
+    <child link="lauv_fin1" />
+  </joint>
+  <link name="lauv_fin1">
+    <inertial>
+      <mass value="0.0001" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/black_fin.dae" scale="1 1 1" />
+      </geometry>
+    </visual>
+  </link>
+  <joint name="lauv_fin2_joint" type="revolute">
+    <limit effort="0" lower="-1.5707961" upper="1.5707961" velocity="0" />
+    <origin rpy="3.141592653589793 0 0" xyz="-0.4 0 -0.04" />
+    <axis xyz="0 0 1" />
+    <parent link="lauv_base_link" />
+    <child link="lauv_fin2" />
+  </joint>
+  <link name="lauv_fin2">
+    <inertial>
+      <mass value="0.0001" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/black_fin.dae" scale="1 1 1" />
+      </geometry>
+    </visual>
+  </link>
+  <joint name="lauv_fin3_joint" type="revolute">
+    <limit effort="0" lower="-1.5707961" upper="1.5707961" velocity="0" />
+    <origin rpy="-1.5707963267948966 0 0" xyz="-0.4 0.04 0" />
+    <axis xyz="0 0 1" />
+    <parent link="lauv_base_link" />
+    <child link="lauv_fin3" />
+  </joint>
+  <link name="lauv_fin3">
+    <inertial>
+      <mass value="0.0001" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/black_fin.dae" scale="1 1 1" />
+      </geometry>
+    </visual>
+  </link>
+  <link name="lauv_gps_link">
+    <inertial>
+      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+      <mass value="0.001" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
+    </inertial>
+  </link>
+  <joint name="lauv_gps_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <parent link="lauv_base_link" />
+    <child link="lauv_gps_link" />
+    <axis xyz="1 0 0" />
+    <limit effort="0" lower="0" upper="0" velocity="0" />
+  </joint>
+  <link name="lauv_pose_sensor_link_default">
+    <inertial>
+      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+      <mass value="0.001" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
+    </inertial>
+  </link>
+  <joint name="lauv_pose_sensor_default_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <axis xyz="0 0 1" />
+    <parent link="lauv_base_link" />
+    <child link="lauv_pose_sensor_link_default" />
+    <limit effort="0" lower="0" upper="0" velocity="0" />
+  </joint>
+  <link name="lauv_imu_link">
+    <inertial>
+      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+      <mass value="0.015" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
+    </inertial>
+  </link>
+  <joint name="lauv_imu_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <parent link="lauv_base_link" />
+    <child link="lauv_imu_link" />
+    <limit effort="0" lower="0" upper="0" velocity="0" />
+    <axis xyz="1 0 0" />
+  </joint>
+  <link name="lauv_cc_sensor_link">
+    <inertial>
+      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+      <mass value="0.001" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
+    </inertial>
+  </link>
+  <joint name="lauv_cc_sensor_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <parent link="lauv_base_link" />
+    <child link="lauv_cc_sensor_link" />
+    <axis xyz="1 0 0" />
+    <limit effort="0" lower="0" upper="0" velocity="0" />
+  </joint>
+</robot>

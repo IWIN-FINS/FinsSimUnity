@@ -1,0 +1,34 @@
+{
+    "name": "FinsSim.Tasks.ThreeChaseOne.Editor",
+    "rootNamespace": "FinsSim.Tasks.ThreeChaseOne.Editor",
+    "references": [
+        "FinsSim.Tasks",
+        "FinsSim.Platform",
+        "FinsSim.Core",
+        "FinsSim.Diagnostics",
+        "NWH.Common",
+        "NWH.DWP2",
+        "Crest",
+        "Obi",
+        "PluginsAssembly",
+        "Unity.RenderPipelines.Core.Runtime",
+        "Unity.RenderPipelines.HighDefinition.Runtime",
+        "Unity.RenderPipelines.HighDefinition.Editor",
+        "Unity.ML-Agents",
+        "Unity.ML-Agents.Input",
+        "Unity.InputSystem",
+        "Unity.Mathematics",
+        "OpenSourceCloth"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

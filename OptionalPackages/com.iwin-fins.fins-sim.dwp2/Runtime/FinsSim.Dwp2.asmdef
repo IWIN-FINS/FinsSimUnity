@@ -1,0 +1,26 @@
+{
+  "name": "FinsSim.Dwp2",
+  "rootNamespace": "FinsSim",
+  "references": [
+    "FinsSim.Platform",
+    "FinsSim.Core",
+    "FinsSim.Tasks",
+    "NWH.DWP2",
+    "NWH.Common",
+    "Unity.Mathematics",
+    "Unity.RenderPipelines.HighDefinition.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "Google.Protobuf.dll",
+    "Grpc.Core.Api.dll",
+    "Grpc.Core.dll"
+  ],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

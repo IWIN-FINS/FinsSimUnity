@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MARUS / DWP2 / Crest / Gazebo Sim 水动力学代码对比报告</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --ink: #18212b;
+      --muted: #5c6b7a;
+      --line: #d7dee6;
+      --accent: #0f5b78;
+      --accent-soft: #dff0f7;
+      --warn: #8a5a00;
+      --warn-soft: #fff3d6;
+      --ok: #1d6b3c;
+      --ok-soft: #def5e5;
+      --bad: #8a2432;
+      --bad-soft: #fde5ea;
+      --code: #edf2f7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
+      background: linear-gradient(180deg, #eef5fb 0%, var(--bg) 180px);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    .page {
+      width: min(1200px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+    }
+
+    .hero,
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(16, 32, 48, 0.05);
+    }
+
+    .hero {
+      padding: 28px 30px;
+      margin-bottom: 18px;
+    }
+
+    section {
+      padding: 24px 26px;
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.25;
+      margin: 0 0 14px;
+    }
+
+    h1 {
+      font-size: 30px;
+      color: #12384c;
+    }
+
+    h2 {
+      font-size: 22px;
+      color: var(--accent);
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+
+    h3 {
+      font-size: 18px;
+      margin-top: 22px;
+      color: #24465a;
+    }
+
+    p, li {
+      font-size: 15px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      background: var(--accent-soft);
+      color: #0e495f;
+      border: 1px solid #bfdbe8;
+      border-radius: 999px;
+      padding: 6px 11px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .summary-box {
+      border-left: 5px solid var(--accent);
+      background: #f7fbfe;
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      background: #fbfcfe;
+    }
+
+    .tag {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 12px;
+      margin-right: 6px;
+      margin-bottom: 8px;
+      border: 1px solid transparent;
+    }
+
+    .tag-ok {
+      background: var(--ok-soft);
+      color: var(--ok);
+      border-color: #b7e2c6;
+    }
+
+    .tag-warn {
+      background: var(--warn-soft);
+      color: var(--warn);
+      border-color: #efd89a;
+    }
+
+    .tag-bad {
+      background: var(--bad-soft);
+      color: var(--bad);
+      border-color: #f3b8c3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      padding: 12px 12px;
+    }
+
+    th:last-child, td:last-child {
+      border-right: 0;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    th {
+      background: #eef5fb;
+      color: #20455b;
+      font-weight: 700;
+    }
+
+    code {
+      background: var(--code);
+      border: 1px solid #d6e0ea;
+      border-radius: 6px;
+      padding: 1px 5px;
+      font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+      font-size: 13px;
+      color: #243949;
+    }
+
+    ul {
+      margin: 10px 0 0 20px;
+      padding: 0;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .callout {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      margin: 12px 0;
+    }
+
+    .callout.warn {
+      background: var(--warn-soft);
+      border-color: #f1d693;
+    }
+
+    .callout.ok {
+      background: var(--ok-soft);
+      border-color: #bce0c7;
+    }
+
+    .callout.bad {
+      background: var(--bad-soft);
+      border-color: #efb0bb;
+    }
+
+    .mono-list li {
+      font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+      font-size: 13px;
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 8px 2px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <h1>MARUS / DWP2 / Crest / Gazebo Sim 水动力学代码对比报告</h1>
+      <p>
+        这份报告基于当前本地源码静态阅读整理，目标是回答四个问题：
+        这些项目的“水相关计算”各自主要做什么、算法层面有什么不同、哪个更适合你借鉴到自己的代码里，以及对应的大致工作量。
+      </p>
+      <div class="meta">
+        生成时间：2026-05-29　
+        检查范围：<code>Packages/com.iwin-fins.fins-sim</code>、<code>Packages/com.nwh.dynamicwaterphysics</code>、
+        <code>Assets/Crest</code> 与 Gazebo Sim 上游源码
+      </div>
+      <div class="chips">
+        <span class="chip">MARUS 自研代码 + Crest 采样适配</span>
+        <span class="chip">NWH Dynamic Water Physics 2（DWP2）</span>
+        <span class="chip">Crest 波面 / 查询 / 动态波 / 流场</span>
+        <span class="chip">Gazebo Sim Buoyancy / Hydrodynamics / BuoyancyEngine</span>
+      </div>
+    </div>
+
+    <section>
+      <h2>先看结论</h2>
+      <div class="summary-box">
+        <strong>一句话总结：</strong>
+        如果你要做的是 <strong>Unity 里的开源水动力系统</strong>，最值得直接借鉴的代码组合是
+        <strong>MARUS + Crest</strong>；如果你要借鉴的是 <strong>算法思想</strong>，并且目标包含
+        <strong>AUV / ROV 六自由度动力学</strong>，最值得吸收的是 <strong>gz-sim 的 Fossen 模型</strong>；
+        <strong>NWH DWP2</strong> 的工程实现很成熟，但因为许可不是标准开源协议，不适合直接拷贝到公开仓库。
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <span class="tag tag-ok">最适合直接改造</span>
+          <h3>MARUS + Crest</h3>
+          <p>
+            同样是 Unity/C#，而且本项目已经在用 Crest 做水面采样。
+            MARUS 自己的 <code>BoatPhysics</code> 已经有“网格切水面 + 面片受力”的雏形，
+            Crest 则提供更强的波面、法向、流场查询。
+          </p>
+        </div>
+        <div class="card">
+          <span class="tag tag-warn">最成熟但不宜直接拷</span>
+          <h3>NWH DWP2</h3>
+          <p>
+            在 Unity 里做浮体/船体水动力，DWP2 的结构比 MARUS 更完整更稳定，
+            但本地源码头部和 <code>package.json</code> 都明确指向 Unity Asset Store 许可，
+            不建议直接复制到你的开源项目里。
+          </p>
+        </div>
+        <div class="card">
+          <span class="tag tag-ok">波面最强</span>
+          <h3>Crest</h3>
+          <p>
+            Crest 的强项是海面本身：波谱、Gerstner、FFT、动态波、流场、碰撞查询。
+            它不是完整船体水动力求解器，但它是非常好的“水面场”和“水面采样 API”。
+          </p>
+        </div>
+        <div class="card">
+          <span class="tag tag-ok">AUV/ROV 模型最物理</span>
+          <h3>gz-sim</h3>
+          <p>
+            gz-sim 的 <code>Hydrodynamics</code> 是标准的 6DOF 系数模型路线，
+            更像控制/机器人仿真中的海洋动力学，而不是游戏里常见的“切水面 + 面片力”。
+            有标定系数时，它往往更物理；没系数时，则未必更“准”。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>1. 这些代码的水相关计算，主要集中在什么方面？</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>项目</th>
+            <th>主要代码位置</th>
+            <th>计算重点</th>
+            <th>是否负责波面生成</th>
+            <th>是否负责船/浮体受力</th>
+            <th>是否负责 6DOF 系数水动力</th>
+            <th>估算代码量</th>
+            <th>许可</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>MARUS 自研</strong></td>
+            <td>
+              <code>Packages/com.iwin-fins.fins-sim/Runtime/Platform/BoatPhysics/*.cs</code><br>
+              <code>Packages/com.iwin-fins.fins-sim/Runtime/Platform/Ocean/WaterHeightSampler.cs</code>
+            </td>
+            <td>
+              表面浮力、船体面片切水面、粘性阻力、压差阻力、拍水力（slamming）、
+              简单体素浮力
+            </td>
+            <td>否，依赖 Crest 采样</td>
+            <td>是</td>
+            <td>否</td>
+            <td>
+              核心约 <strong>1654</strong> 行<br>
+              其中 <code>BoatPhysics</code> 目录约 <strong>1525</strong> 行
+            </td>
+            <td>Apache 2.0</td>
+          </tr>
+          <tr>
+            <td><strong>NWH DWP2</strong></td>
+            <td>
+              <code>Runtime/WaterObject/WaterObject.cs</code><br>
+              <code>Runtime/WaterObject/MeshUtility.cs</code><br>
+              <code>Runtime/WaterObject/WaterDataProvider/*</code>
+            </td>
+            <td>
+              网格预处理、三角面片切水面、浮力、法向压力阻力、表面切向阻力、
+              吸力/拍水系数、水面/法向/流场数据提供器
+            </td>
+            <td>否，自身不生产海面，依赖 provider</td>
+            <td>是</td>
+            <td>否</td>
+            <td>
+              本次重点统计核心约 <strong>2711</strong> 行<br>
+              WaterObject 运行时代码约 <strong>3971</strong> 行
+            </td>
+            <td>Unity Asset Store Terms</td>
+          </tr>
+          <tr>
+            <td><strong>Crest</strong></td>
+            <td>
+              <code>Scripts/Shapes/*</code><br>
+              <code>Scripts/Collision/*</code><br>
+              <code>Scripts/LodData/*</code><br>
+              <code>Scripts/Interaction/*</code><br>
+              <code>Scripts/OceanRenderer.cs</code>
+            </td>
+            <td>
+              波谱、Gerstner、FFT、LOD 波面级联、位移/高度/法向/表面速度查询、
+              动态波、流场、深度缓存、简单浮体示例
+            </td>
+            <td>是</td>
+            <td>部分负责，主要是示例级/简化型</td>
+            <td>否</td>
+            <td>
+              本次重点统计核心约 <strong>6028</strong> 行<br>
+              更广义的波面/碰撞/LOD/交互脚本约 <strong>13065</strong> 行
+            </td>
+            <td>MIT</td>
+          </tr>
+          <tr>
+            <td><strong>gz-sim</strong></td>
+            <td>
+              <code>src/systems/buoyancy/*</code><br>
+              <code>src/systems/hydrodynamics/*</code><br>
+              <code>src/systems/buoyancy_engine/*</code>
+            </td>
+            <td>
+              体积浮力、分层浮力、Fossen 6DOF 阻尼/附加质量/科氏项、
+              海流、变浮力引擎
+            </td>
+            <td>核心仓库里没有找到表面波体相互作用实现</td>
+            <td>是，但更偏机器人动力学层</td>
+            <td>是</td>
+            <td>
+              核心实现约 <strong>2366</strong> 行<br>
+              若算 hydrodynamics 单测则再加约 <strong>680</strong> 行
+            </td>
+            <td>Apache 2.0</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="small">
+        说明：代码量是按“本次纳入比较的核心文件”粗略统计，不含大多数 shader、资源、示例场景和无关编辑器脚本。
+      </p>
+      <div class="callout warn">
+        <strong>当前工程状态并不是单一栈：</strong>
+        除了 <code>Packages/com.iwin-fins.fins-sim</code> 里的 MARUS 自研水动力代码外，项目里还出现了
+        <code>Assets/Scripts/DWP2DebugController.cs</code>、<code>Assets/Scripts/ControlForVelocity.cs</code>
+        这类 NWH DWP2 相关脚本，因此当前仓库更像是 <strong>MARUS + Crest + DWP2 部分接入</strong> 的混合状态。
+        这意味着你后续最好先明确“谁负责海面、谁负责受力、谁负责推进/控制”，再做统一重构。
+      </div>
+    </section>
+
+    <section>
+      <h2>2. 各项目算法层面到底怎么做？</h2>
+
+      <h3>2.1 MARUS：两条路线并存，且都依赖 Crest 给水位</h3>
+      <div class="grid grid-2">
+        <div class="card">
+          <span class="tag tag-warn">路线 A</span>
+          <strong><code>Buoyancy.cs</code>：体素浮力</strong>
+          <ul>
+            <li>先把物体 collider 按 <code>slicesPerAxis</code> 切成体素点，凹网格时还会做 <code>PointIsInsideMeshCollider()</code> 判定。</li>
+            <li>每个体素分一份平均的阿基米德浮力 <code>localArchimedesForce</code>。</li>
+            <li>每帧调用 <code>WaterHeightSampler.Instance.GetWaterLevel()</code> 取每个体素所在位置的水位。</li>
+            <li>根据体素没入比例 <code>k</code>，叠加 <code>sqrt(k) * buoyancy</code> 与一个简单局部阻尼 <code>-velocity * drag * mass</code>。</li>
+            <li>核心问题：这套力是直接在 <code>Update()</code> 里加到刚体上，不是在 <code>FixedUpdate()</code> 里。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag tag-ok">路线 B</span>
+          <strong><code>BoatPhysics.cs</code>：三角面片切水面</strong>
+          <ul>
+            <li><code>ModifyBoatMesh.GenerateUnderwaterMesh()</code> 每次先把船体三角面片按水线切开，区分完全在水下、完全在水上、部分入水。</li>
+            <li>完全入水的三角面，直接受力；部分入水的三角面会被切成 1 个或 2 个水下三角面。</li>
+            <li>受力项分 4 类：静水浮力、粘性阻力、压差阻力、拍水力（slamming）。</li>
+            <li>水位来自 <code>WaterHeightSampler</code>，而 <code>WaterHeightSampler</code> 本质上只是 Crest 的一个薄包装。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <strong>MARUS 当前的关键特点：</strong>
+        自己负责“船体怎么切水面、怎么加力”，但不负责“水面怎么产生”。在当前工程里，水面高度基本依赖 Crest 的
+        <code>CollisionProvider</code> 查询。
+      </div>
+
+      <p><strong>MARUS 三角面片路线的具体受力模型：</strong></p>
+      <ul>
+        <li><strong>静水浮力：</strong><code>BoatPhysicsMath.BuoyancyForce()</code> 用的是 <code>rho * g * depth * area * normal</code> 思路，但最后把 <code>x/z</code> 分量直接置零，也就是说它基本只保留竖向浮力，不充分利用水面斜率和局部法向。</li>
+        <li><strong>粘性阻力：</strong>先把点速度投影到切平面，利用 Reynolds 数算 <code>Cf</code>，再做切向摩擦型阻力。</li>
+        <li><strong>压差阻力：</strong>按面法向与速度方向夹角区分 pressure drag / suction drag，系数通过 <code>DebugPhysics</code> 提供，可调性强，但经验性也很强。</li>
+        <li><strong>拍水力：</strong>通过“原始三角形当前/上一帧淹没面积”和速度差估算，属于比较典型的游戏化 slamming 近似。</li>
+      </ul>
+
+      <p><strong>我对 MARUS 的判断：</strong></p>
+      <ul>
+        <li>它是一个很好的 <strong>开源起点</strong>，特别适合你做“自己可控的 Unity 水动力骨架”。</li>
+        <li>但它目前还是 <strong>研究型/原型型实现</strong>：体素版太粗糙，面片版更合理，但离成熟工程还差 mesh 预处理、水面法向/流场、统一时序、参数标定工具这些层。</li>
+      </ul>
+
+      <h3>2.2 NWH DWP2：成熟的 Unity 工程化版本，核心仍是“切水面 + 面片受力”</h3>
+      <ul>
+        <li><strong>预处理更完整：</strong><code>MeshUtility</code> 会做可选的简化、凸包化、顶点焊接，这会显著改善性能和稳定性。</li>
+        <li><strong>求解主循环更统一：</strong><code>WaterObject.FixedUpdate()</code> 内统一做水面数据查询、三角形分类、受力计算、力矩汇总和刚体施加。</li>
+        <li><strong>水面数据更丰富：</strong>不仅有高度，还可取法向、流场速度；provider 既可以是平面水，也可以是 raycast，也可以接 Crest。</li>
+        <li><strong>几何处理更扎实：</strong><code>CalcTri()</code>、<code>OneUnderWater()</code>、<code>TwoUnderWater()</code>、<code>ThreeUnderWater()</code> 把部分入水三角面的切分流程写得更稳。</li>
+      </ul>
+
+      <p><strong>DWP2 的受力模型和 MARUS 的差异：</strong></p>
+      <ul>
+        <li>浮力项不是简单只往上推，而是允许沿着插值后的水面法向施加。</li>
+        <li>动态阻力由两部分组成：面法向压力项 + 面切向 skin drag 项。</li>
+        <li>没有像 MARUS 那样单独做“基于面积变化和加速度”的 slamming 方程，而是用 <code>slamForceCoefficient</code> / <code>suctionForceCoefficient</code> 做进入/离开水面的系数调制。</li>
+        <li>从工程角度看，它更像“稳定、通用、可扩展的统一解算器”；从物理纯度看，它仍然偏经验型，而不是严格的船舶理论模型。</li>
+      </ul>
+
+      <div class="callout bad">
+        <strong>许可边界非常重要：</strong>
+        本地源码头部明确写着 <code>Licensed under Unity Asset Store Terms of Service</code>，
+        <code>package.json</code> 的 <code>licensesUrl</code> 也指向 Unity Asset Store 条款。
+        这意味着它 <strong>不适合直接拷贝进你的开源仓库</strong>。你可以学习结构和思路，但不要照搬源码。
+      </div>
+
+      <h3>2.3 Crest：重点不是“船体水动力”，而是“海面场 + 采样 API”</h3>
+      <ul>
+        <li><strong>波面建模：</strong><code>OceanWaveSpectrum.cs</code> 定义谱能量；<code>ShapeGerstner.cs</code> 用 Gerstner 波；<code>ShapeFFT.cs</code> 用 FFT 波面。</li>
+        <li><strong>大场景组织：</strong><code>OceanRenderer.cs</code> + 一套 LOD 数据管理器，负责波面级联、动态波、流场、深度缓存等。</li>
+        <li><strong>碰撞/采样：</strong><code>CollProvider</code> 接口允许查询 <strong>位移 / 高度 / 法向 / 表面速度</strong>；<code>SamplingHelpers.cs</code> 给了单点 helper；<code>CollProviderBakedFFT.cs</code> 提供 CPU/Job 友好的 baked FFT 查询路径。</li>
+        <li><strong>交互：</strong><code>LodDataMgrDynWaves</code> 和 <code>SphereWaterInteraction</code> / <code>ObjectWaterInteraction</code> 负责把物体运动反馈到动态波模拟中，形成尾迹、波纹等。</li>
+      </ul>
+
+      <p><strong>Crest 自带的“浮体”脚本本质是示例，不是完整船体求解器：</strong></p>
+      <ul>
+        <li><code>SimpleFloatingObject.cs</code>：单点或单体近似浮力，配合法向对齐和简化阻力。</li>
+        <li><code>BoatProbes.cs</code>：多个 probe 点采样水面，然后按点权重加浮力和简单阻力。</li>
+        <li>这类脚本更适合“快速做出会漂、会随浪”的效果，不适合高保真船体水动力研究。</li>
+      </ul>
+
+      <div class="callout ok">
+        <strong>Crest 最值得你借鉴的，不是浮力脚本本身，而是：</strong>
+        <strong>波面生成、法向/位移/表面速度/流场查询接口、动态波交互结构</strong>。
+      </div>
+
+      <h3>2.4 gz-sim：真正偏海洋机器人动力学，不是 Unity 式切水面路线</h3>
+      <ul>
+        <li><strong>Buoyancy：</strong><code>src/systems/buoyancy</code> 负责按照碰撞体积和体积中心加浮力。</li>
+        <li><strong>Hydrodynamics：</strong><code>src/systems/hydrodynamics</code> 负责 6DOF 系数模型，包括线性阻尼、二次阻尼、附加质量、科氏项、海流。</li>
+        <li><strong>BuoyancyEngine：</strong><code>src/systems/buoyancy_engine</code> 是可变浮力引擎，更像水下滑翔机的机械膀胱/压载舱。</li>
+      </ul>
+
+      <p><strong>gz-sim Buoyancy 的核心思路：</strong></p>
+      <ul>
+        <li>先从 link 的 collision 几何体里算总体积和体积中心。</li>
+        <li>均匀浮力模式下，直接按 <code>buoyancy = -fluidDensity * volume * gravity</code> 施加。</li>
+        <li>分层浮力模式下，会按 Z 方向“流体层”切分几何体，对 box/sphere/cylinder/capsule/ellipsoid/cone 调用 <code>VolumeBelow()</code> / <code>CenterOfVolumeBelow()</code>。</li>
+        <li>这对水下器或简单水面分层很好用，但它不是网格级的自由液面船体受力求解。</li>
+      </ul>
+
+      <p><strong>gz-sim Hydrodynamics 的核心思路：</strong></p>
+      <ul>
+        <li>明确采用 <strong>Fossen 6DOF 海洋航行器模型</strong>。</li>
+        <li>水动力阻尼是矩阵形式：<code>D(v_r) * v_r</code>，其中 <code>v_r = v - current</code>。</li>
+        <li>线性和二次阻尼系数通过 SNAME 约定命名的 XML/SDF 参数配置，例如 <code>xU</code>、<code>yVabsV</code>、<code>nR</code>。</li>
+        <li>支持海流 topic 或环境场表插值。</li>
+        <li>支持附加质量，并对 DART 的 <code>&lt;fluid_added_mass&gt;</code> 做了额外的 Coriolis 修正。</li>
+      </ul>
+
+      <div class="callout warn">
+        <strong>很关键的一点：</strong>
+        <code>tutorials/surface_vehicles.md</code> 里提到了 <strong>Surface plugin</strong> 和 <strong>wavefield</strong>，
+        但在你给出的 <code>gz-sim</code> 源码路径下，我没有找到对应的 <code>src/systems/surface</code> 实现。
+        也就是说，本次能直接比较到的 gz-sim 水相关代码，主要是 <strong>浮力、阻尼、附加质量、海流</strong>，
+        不是“波浪下的表面艇网格级相互作用”。
+      </div>
+    </section>
+
+    <section>
+      <h2>3. 算法层面最核心的不同</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>比较维度</th>
+            <th>MARUS</th>
+            <th>NWH DWP2</th>
+            <th>Crest</th>
+            <th>gz-sim</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>核心范式</td>
+            <td>网格/体素离散后按局部没入程度加力</td>
+            <td>网格三角面切水面后统一求解</td>
+            <td>波面场生成 + 采样</td>
+            <td>系数矩阵动力学</td>
+          </tr>
+          <tr>
+            <td>水面来源</td>
+            <td>Crest 高度查询</td>
+            <td>Provider 抽象，可接 Crest / Raycast / Flat</td>
+            <td>自己生成波面</td>
+            <td>核心仓库不负责表面波场</td>
+          </tr>
+          <tr>
+            <td>是否切分部分入水三角面</td>
+            <td>是</td>
+            <td>是</td>
+            <td>否，只有简化 sample</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td>是否使用水面法向</td>
+            <td>主体没有充分使用</td>
+            <td>是</td>
+            <td>能提供法向</td>
+            <td>不依赖波面法向</td>
+          </tr>
+          <tr>
+            <td>是否使用流场 / 相对水速</td>
+            <td>几乎没有</td>
+            <td>是</td>
+            <td>能提供 flow / surface velocity</td>
+            <td>是，<code>v_r = v - current</code></td>
+          </tr>
+          <tr>
+            <td>附加质量 / Coriolis</td>
+            <td>无</td>
+            <td>无显式完整 6x6 模型</td>
+            <td>无</td>
+            <td>有</td>
+          </tr>
+          <tr>
+            <td>适合对象</td>
+            <td>Unity 里自己做船体浮力原型</td>
+            <td>Unity 通用浮体 / 船体工程实现</td>
+            <td>海面 / 尾迹 / 水面采样基础设施</td>
+            <td>AUV / ROV / 机器人海洋动力学</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>4. 哪个更加精确？这个问题要按场景拆开看</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>目标</th>
+            <th>更优的项目</th>
+            <th>原因</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>海面高度 / 法向 / 波形细节</td>
+            <td><strong>Crest</strong></td>
+            <td>它本来就是波面系统，FFT / Gerstner / LOD / 动态波这些都在它强项里。</td>
+          </tr>
+          <tr>
+            <td>Unity 内表面船体 / 漂浮物的开箱即用完整度</td>
+            <td><strong>NWH DWP2</strong></td>
+            <td>它的网格预处理、provider 抽象、统一求解流程和调试能力都比 MARUS 现状更成熟。</td>
+          </tr>
+          <tr>
+            <td>表面船体的开源可改造性</td>
+            <td><strong>MARUS + Crest</strong></td>
+            <td>同是 Unity/C#、许可宽松、项目结构接近你当前工程，落地成本最低。</td>
+          </tr>
+          <tr>
+            <td>AUV / ROV 六自由度动力学物理表达</td>
+            <td><strong>gz-sim</strong></td>
+            <td>Fossen 6DOF、阻尼矩阵、附加质量、海流修正都比 Unity 游戏式浮力模型更正规。</td>
+          </tr>
+          <tr>
+            <td>没有实验系数时的“看起来合理 + 工程稳定”</td>
+            <td><strong>NWH DWP2</strong></td>
+            <td>它虽然经验化，但在 Unity 场景下通常更稳、更完整。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>4.1 我对四者“精度”的具体判断</h3>
+      <ul>
+        <li><strong>MARUS 体素浮力</strong>：精度最低，但实现最简单。</li>
+        <li><strong>MARUS 面片浮力</strong>：比体素版合理很多，已经是能继续打磨的基础，但它对水面法向/流场/统一时序的处理还不够成熟。</li>
+        <li><strong>NWH DWP2</strong>：在 Unity 游戏/仿真语境里，通常会比 MARUS 当前实现更稳、更完整，也更接近“可长期维护的中间层”。</li>
+        <li><strong>Crest</strong>：不是“水动力求解最精确”，而是“水面表示最强”。</li>
+        <li><strong>gz-sim</strong>：如果你做的是 AUV/ROV，而且你有可靠的阻尼/附加质量/海流参数，那么它的动力学表达最物理；但如果你想做的是“自由液面上 hull mesh 跟波浪的细致作用”，核心仓库里并没有给你现成的那一套。</li>
+      </ul>
+
+      <div class="callout ok">
+        <strong>所以“哪个更精确”的最终答案是：</strong><br>
+        <strong>波面：Crest 最强。</strong><br>
+        <strong>Unity 表面船体受力：NWH DWP2 现成实现更完整，MARUS 更适合开源二次开发。</strong><br>
+        <strong>AUV/ROV 理论动力学：gz-sim 最物理。</strong>
+      </div>
+    </section>
+
+    <section>
+      <h2>5. 借鉴可行性怎么样？借鉴哪个项目最好？</h2>
+
+      <h3>5.1 直接借代码的可行性</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>来源</th>
+            <th>直接借代码到你自己的开源项目</th>
+            <th>原因</th>
+            <th>更适合借什么</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>MARUS</td>
+            <td><strong>高</strong></td>
+            <td>Apache 2.0，且语言、引擎、工程上下文都和你现在一致。</td>
+            <td>三角面切水面框架、力项拆分、Crest 水位采样适配方式</td>
+          </tr>
+          <tr>
+            <td>Crest</td>
+            <td><strong>高</strong></td>
+            <td>MIT，且最有价值的是海面场和采样接口。</td>
+            <td>波面、法向/位移/表面速度/流场查询、动态波交互结构</td>
+          </tr>
+          <tr>
+            <td>NWH DWP2</td>
+            <td><strong>低</strong></td>
+            <td>不是常规开源许可，公开仓库直接复制风险高。</td>
+            <td>只能借工程思路，不建议借源码文本</td>
+          </tr>
+          <tr>
+            <td>gz-sim</td>
+            <td><strong>中</strong></td>
+            <td>Apache 2.0 没问题，但它是 C++/Gazebo ECS 体系，移植到 Unity 需要重写。</td>
+            <td>Fossen 模型、参数命名、阻尼/附加质量/海流框架</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>5.2 如果只能选“最值得借鉴”的项目</h3>
+      <div class="grid grid-2">
+        <div class="card">
+          <span class="tag tag-ok">如果你要直接改你现在的 Unity 项目</span>
+          <h3>优先借 MARUS + Crest</h3>
+          <ul>
+            <li>MARUS 给你现成的开源 Unity 受力代码。</li>
+            <li>Crest 给你更强的水面数据源。</li>
+            <li>你能最快形成一个“完全开源、完全可控”的自有实现。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag tag-ok">如果你要借“理论框架”</span>
+          <h3>优先借 gz-sim</h3>
+          <ul>
+            <li>特别适合做 AUV / ROV / 水下机器人。</li>
+            <li>适合把 6DOF 阻尼、附加质量、海流相对速度这一层补到 Unity 里。</li>
+            <li>不是照抄，而是“按它的模型重写一份 C# 版本”。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <strong>我不建议你把 NWH DWP2 作为主借鉴源做“直接复制式开发”。</strong>
+        最好的用法是：<strong>读它、学它、重写它的工程结构和思路</strong>，但不要把源码直接搬到一个公开开源项目里。
+      </div>
+    </section>
+
+    <section>
+      <h2>6. 如果是为了完善你自己的代码，我建议的“最佳算法组合”</h2>
+      <div class="summary-box">
+        <strong>最佳实践不是四选一，而是组合：</strong>
+        <strong>Crest 做海面，MARUS/NWH 风格做表面切水面受力，gz-sim 风格做水下 6DOF 阻尼/附加质量/海流。</strong>
+      </div>
+
+      <h3>建议的目标架构</h3>
+      <ul>
+        <li><strong>第 1 层：水面场</strong>：用 Crest 提供 <code>height / displacement / normal / surface velocity / flow</code>。</li>
+        <li><strong>第 2 层：表面船体受力</strong>：用三角面切水面求解，而不是纯体素或纯 probe。</li>
+        <li><strong>第 3 层：水下动力学</strong>：对 AUV / ROV 加一个 Fossen 风格的 6DOF 系数层。</li>
+        <li><strong>第 4 层：多级精度</strong>：近处或关键对象用三角面切分；远处或小物体用 probe / 简化浮力。</li>
+      </ul>
+
+      <h3>具体应该借哪些点</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>你应该借的点</th>
+            <th>最好来源</th>
+            <th>为什么</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>水位 / 法向 / 表面速度 / 流场采样接口</td>
+            <td>Crest</td>
+            <td>它就是为这件事设计的，而且接口成熟。</td>
+          </tr>
+          <tr>
+            <td>船体按水线切三角面</td>
+            <td>MARUS / NWH 思路</td>
+            <td>这是 Unity 里做表面艇 hull-water interaction 的合理中间路线。</td>
+          </tr>
+          <tr>
+            <td>网格预处理（简化 / 凸包 / 焊接）</td>
+            <td>NWH 思路</td>
+            <td>这是 MARUS 目前最缺的一块工程化能力。</td>
+          </tr>
+          <tr>
+            <td>6DOF 阻尼 / 附加质量 / 海流相对速度</td>
+            <td>gz-sim</td>
+            <td>理论上更规范，特别适合水下航行器。</td>
+          </tr>
+          <tr>
+            <td>简单浮体 / 低成本物体的备用方案</td>
+            <td>Crest 示例</td>
+            <td>probe 或 simple floating object 很适合做低开销 fallback。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>7. 工作量大概怎么样？</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>阶段</th>
+            <th>内容</th>
+            <th>预估工作量</th>
+            <th>价值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Phase 1</td>
+            <td>把 MARUS 现有水动力统一到 <code>FixedUpdate()</code>，清理 <code>Buoyancy.cs</code> / <code>BoatPhysics.cs</code> 时序，补参数暴露</td>
+            <td>2 到 4 天</td>
+            <td>马上提升稳定性</td>
+          </tr>
+          <tr>
+            <td>Phase 2</td>
+            <td>给 MARUS 面片求解器接入 Crest 法向、表面速度、流场；不再只拿高度</td>
+            <td>2 到 5 天</td>
+            <td>浪面跟随、相对水速阻力会明显更合理</td>
+          </tr>
+          <tr>
+            <td>Phase 3</td>
+            <td>补上 NWH 风格的 mesh 预处理：简化、焊点、可选凸化、调试显示</td>
+            <td>3 到 7 天</td>
+            <td>性能和鲁棒性提升很大</td>
+          </tr>
+          <tr>
+            <td>Phase 4</td>
+            <td>把 MARUS 的阻力项整理成更清晰的统一模型，必要时吸收 DWP2 的法向压力 + skin drag 组织方式</td>
+            <td>3 到 7 天</td>
+            <td>代码结构会更像“长期可维护的系统”</td>
+          </tr>
+          <tr>
+            <td>Phase 5</td>
+            <td>为 AUV / ROV 加一层 gz-sim/Fossen 风格的 6DOF 系数模型</td>
+            <td>1 到 3 周</td>
+            <td>水下动力学质量提升最大</td>
+          </tr>
+          <tr>
+            <td>Phase 6</td>
+            <td>统一表面模式和水下模式，加参数标定、可视化和 regression 测试</td>
+            <td>2 到 5 周</td>
+            <td>形成真正可复用的自有框架</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>如果只问“要花多少精力，才能明显比现在好很多”：</strong></p>
+      <ul>
+        <li><strong>最低有效投入：</strong>大约 <strong>1 周</strong>，做时序统一 + Crest 法向/流场接入。</li>
+        <li><strong>比较扎实的升级：</strong>大约 <strong>2 到 4 周</strong>，把 mesh 预处理和更完整的阻力组织一起补上。</li>
+        <li><strong>做成一套你自己的、能兼顾表面艇和 AUV 的框架：</strong>大约 <strong>4 到 8 周</strong>。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>8. 我给你的实际建议</h2>
+      <ol>
+        <li><strong>不要把 NWH DWP2 当成可直接复制的源码来源。</strong>把它当成工程结构参考即可。</li>
+        <li><strong>短期内最划算的方案：</strong>以 MARUS 的 <code>BoatPhysics</code> 为骨架，直接增强它，而不是另起炉灶。</li>
+        <li><strong>第一优先增强项：</strong>从 Crest 取 <code>normal / surface velocity / flow</code>，让 MARUS 现在的“只看高度”变成“看完整水面状态”。</li>
+        <li><strong>第二优先增强项：</strong>借鉴 DWP2 的 mesh 预处理思路，把模拟网格简化、焊点、可选凸化加进去。</li>
+        <li><strong>第三优先增强项：</strong>对水下航行器，单独加一层 gz-sim/Fossen 风格 6DOF 系数模型，而不是把所有问题都塞进表面浮力面片模型里。</li>
+      </ol>
+
+      <div class="callout ok">
+        <strong>如果你问“借鉴什么项目最好”：</strong><br>
+        <strong>直接落地最好：MARUS + Crest。</strong><br>
+        <strong>算法层最好：gz-sim。</strong><br>
+        <strong>工程结构最好但不适合直接拷：NWH DWP2。</strong>
+      </div>
+    </section>
+
+    <section>
+      <h2>附：本次重点查看的源码入口</h2>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>MARUS</h3>
+          <ul class="mono-list">
+            <li>Packages/com.iwin-fins.fins-sim/Runtime/Platform/BoatPhysics/Buoyancy.cs</li>
+            <li>Packages/com.iwin-fins.fins-sim/Runtime/Platform/BoatPhysics/BoatPhysics.cs</li>
+            <li>Packages/com.iwin-fins.fins-sim/Runtime/Platform/BoatPhysics/BoatPhysicsMath.cs</li>
+            <li>Packages/com.iwin-fins.fins-sim/Runtime/Platform/BoatPhysics/ModifyBoatMesh.cs</li>
+            <li>Packages/com.iwin-fins.fins-sim/Runtime/Platform/Ocean/WaterHeightSampler.cs</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>NWH DWP2</h3>
+          <ul class="mono-list">
+            <li>Packages/com.nwh.dynamicwaterphysics/Runtime/WaterObject/WaterObject.cs</li>
+            <li>Packages/com.nwh.dynamicwaterphysics/Runtime/WaterObject/MeshUtility.cs</li>
+            <li>Packages/com.nwh.dynamicwaterphysics/Runtime/WaterObject/WaterDataProvider/WaterDataProvider.cs</li>
+            <li>Packages/com.nwh.dynamicwaterphysics/Runtime/WaterObject/WaterDataProvider/RaycastWaterDataProvider.cs</li>
+            <li>Packages/com.nwh.dynamicwaterphysics/Samples~/CrestIntegration/CrestWaterDataProvider.cs</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Crest</h3>
+          <ul class="mono-list">
+            <li>Assets/Crest/Crest/Scripts/OceanRenderer.cs</li>
+            <li>Assets/Crest/Crest/Scripts/Shapes/OceanWaveSpectrum.cs</li>
+            <li>Assets/Crest/Crest/Scripts/Shapes/ShapeGerstner.cs</li>
+            <li>Assets/Crest/Crest/Scripts/Shapes/FFT/ShapeFFT.cs</li>
+            <li>Assets/Crest/Crest/Scripts/Collision/CollProvider.cs</li>
+            <li>Assets/Crest/Crest/Scripts/Collision/CollProviderBakedFFT.cs</li>
+            <li>Assets/Crest/Crest/Scripts/Collision/SamplingHelpers.cs</li>
+            <li>Assets/Crest/Crest/Scripts/Interaction/BoatProbes.cs</li>
+            <li>Assets/Crest/Crest/Scripts/Interaction/SimpleFloatingObject.cs</li>
+            <li>Assets/Crest/Crest/Scripts/Interaction/SphereWaterInteraction.cs</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>gz-sim</h3>
+          <ul class="mono-list">
+            <li>Gazebo Sim <code>src/systems/buoyancy/Buoyancy.cc</code></li>
+            <li>Gazebo Sim <code>src/systems/hydrodynamics/Hydrodynamics.cc</code></li>
+            <li>Gazebo Sim <code>src/systems/hydrodynamics/HydrodynamicsUtils.hh</code></li>
+            <li>Gazebo Sim <code>src/systems/buoyancy_engine/BuoyancyEngine.cc</code></li>
+            <li>Gazebo Sim <code>tutorials/theory_buoyancy.md</code></li>
+            <li>Gazebo Sim <code>tutorials/theory_hydrodynamics.md</code></li>
+            <li>Gazebo Sim <code>tutorials/surface_vehicles.md</code></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      注：本报告是基于本地代码静态分析，不包含运行时参数标定、实验水池数据、CFD/BEM 对照验证，因此“精度”评价是工程实现层面的比较，不是严格实验误差排名。
+    </div>
+  </div>
+</body>
+</html>

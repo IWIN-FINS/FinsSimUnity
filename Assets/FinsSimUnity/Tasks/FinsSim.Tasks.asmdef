@@ -1,0 +1,30 @@
+{
+    "name": "FinsSim.Tasks",
+    "rootNamespace": "FinsSim.Tasks",
+    "references": [
+        "FinsSim.Platform",
+        "FinsSim.Core",
+        "FinsSim.Diagnostics",
+        "Crest",
+        "PluginsAssembly",
+        "Unity.ML-Agents",
+        "Unity.ML-Agents.Input",
+        "Unity.InputSystem",
+        "Unity.Mathematics",
+        "Unity.RenderPipelines.HighDefinition.Runtime",
+        "OpenSourceCloth"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Google.Protobuf.dll",
+        "Grpc.Core.Api.dll",
+        "Grpc.Core.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

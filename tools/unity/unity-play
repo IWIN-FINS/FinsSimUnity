@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+COMMAND="${1:-toggle}"
+COMMAND_FILE="${UNITY_PLAY_COMMAND_FILE:-/tmp/unity_play_command}"
+STATUS_FILE="${UNITY_PLAY_STATUS_FILE:-/tmp/unity_play_status.json}"
+
+case "$COMMAND" in
+    start|play|stop|toggle|pause|resume|step|status|isolate-3chase1-herder|clear-3chase1-herder-isolation|enable-3chase1-action-audit|disable-3chase1-action-audit|regenerate-trinetcapture-target-buoyancy-mesh|prepare-trinetcapture-scene|reload-trinetcapture-scene)
+        ;;
+    *)
+        echo "Usage: unity-play {start|play|stop|toggle|pause|resume|step|status|isolate-3chase1-herder|clear-3chase1-herder-isolation|enable-3chase1-action-audit|disable-3chase1-action-audit|regenerate-trinetcapture-target-buoyancy-mesh|prepare-trinetcapture-scene|reload-trinetcapture-scene}" >&2
+        exit 1
+        ;;
+esac
+
+if [[ "$COMMAND" == "status" ]]; then
+    printf 'status\n' > "${COMMAND_FILE}.tmp"
+    mv "${COMMAND_FILE}.tmp" "$COMMAND_FILE"
+    if [[ -f "$STATUS_FILE" ]]; then
+        cat "$STATUS_FILE"
+    else
+        echo "Unity status file not found: $STATUS_FILE" >&2
+        exit 2
+    fi
+    exit 0
+fi
+
+case "$COMMAND" in
+    isolate-3chase1-herder)
+        COMMAND="isolate_3chase1_herder_ros"
+        ;;
+    clear-3chase1-herder-isolation)
+        COMMAND="clear_3chase1_herder_ros_isolation"
+        ;;
+    enable-3chase1-action-audit)
+        COMMAND="enable_3chase1_action_audit"
+        ;;
+    disable-3chase1-action-audit)
+        COMMAND="disable_3chase1_action_audit"
+        ;;
+    regenerate-trinetcapture-target-buoyancy-mesh)
+        COMMAND="regenerate_trinetcapture_target_buoyancy_mesh"
+        ;;
+    prepare-trinetcapture-scene)
+        COMMAND="prepare_trinetcapture_scene"
+        ;;
+    reload-trinetcapture-scene)
+        COMMAND="reload_trinetcapture_scene"
+        ;;
+esac
+
+printf '%s\n' "$COMMAND" > "${COMMAND_FILE}.tmp"
+mv "${COMMAND_FILE}.tmp" "$COMMAND_FILE"
+echo "Unity command sent: $COMMAND"

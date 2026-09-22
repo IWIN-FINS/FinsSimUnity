@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="bluerov2">
+  <link name="bluerov2_base_link">
+    <inertial>
+      <mass value="14.8" />
+      <origin xyz="0 0 -0.116178631882836" />
+      <inertia ixx="5.2539" ixy="0.0144" ixz="0.3341" iyy="7.9420" iyz="0.026" izz="6.9123" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/bluerov2_noprop.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.029044657970709" />
+      <geometry>
+        <box size="0.464714527531344 0.29044657970709 0.116178631882836" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="bluerov2_thruster1">
+    <visual>
+      <geometry>
+        <mesh filename="meshes/bluerov2_propcw.dae" />
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0175 0 0" />
+      <mass value="0.07" />
+      <inertia ixx="8.750000000000001e-05" ixy="0.0" ixz="0.0" iyy="5.089583333333334e-05" iyz="0.0" izz="5.089583333333334e-05" />
+    </inertial>
+  </link>
+  <joint name="thruster1" type="continuous">
+    <origin rpy="0 0 0.7853981634" xyz="0.1355 -0.1 -0.0725" />
+    <axis xyz="1 0 0" />
+    <parent link="bluerov2_base_link" />
+    <child link="bluerov2_thruster1" />
+    <limits effort="-1" velocity="-1" />
+  </joint>
+  <link name="bluerov2_thruster2">
+    <visual>
+      <geometry>
+        <mesh filename="meshes/bluerov2_propcw.dae" />
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0175 0 0" />
+      <mass value="0.07" />
+      <inertia ixx="8.750000000000001e-05" ixy="0.0" ixz="0.0" iyy="5.089583333333334e-05" iyz="0.0" izz="5.089583333333334e-05" />
+    </inertial>
+  </link>
+  <joint name="thruster2" type="continuous">
+    <origin rpy="0 0 -0.7853981634" xyz="0.1355 0.1 -0.0725" />
+    <axis xyz="1 0 0" />
+    <parent link="bluerov2_base_link" />
+    <child link="bluerov2_thruster2" />
+    <limits effort="-1" velocity="-1" />
+  </joint>
+  <link name="bluerov2_thruster3">
+    <visual>
+      <geometry>
+        <mesh filename="meshes/bluerov2_propccw.dae" />
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0175 0 0" />
+      <mass value="0.07" />
+      <inertia ixx="8.750000000000001e-05" ixy="0.0" ixz="0.0" iyy="5.089583333333334e-05" iyz="0.0" izz="5.089583333333334e-05" />
+    </inertial>
+  </link>
+  <joint name="thruster3" type="continuous">
+    <origin rpy="0 0 2.3561944902" xyz="-0.1475 -0.1 -0.0725" />
+    <axis xyz="-1 0 0" />
+    <parent link="bluerov2_base_link" />
+    <child link="bluerov2_thruster3" />
+    <limits effort="-1" velocity="-1" />
+  </joint>
+  <link name="bluerov2_thruster4">
+    <visual>
+      <geometry>
+        <mesh filename="meshes/bluerov2_propccw.dae" />
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0175 0 0" />
+      <mass value="0.07" />
+      <inertia ixx="8.750000000000001e-05" ixy="0.0" ixz="0.0" iyy="5.089583333333334e-05" iyz="0.0" izz="5.089583333333334e-05" />
+    </inertial>
+  </link>
+  <joint name="thruster4" type="continuous">
+    <origin rpy="0 0 -2.3561944902" xyz="-0.1475 0.1 -0.0725" />
+    <axis xyz="-1 0 0" />
+    <parent link="bluerov2_base_link" />
+    <child link="bluerov2_thruster4" />
+    <limits effort="-1" velocity="-1" />
+  </joint>
+  <link name="bluerov2_thruster5">
+    <visual>
+      <geometry>
+        <mesh filename="meshes/bluerov2_propcw.dae" />
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0175 0 0" />
+      <mass value="0.07" />
+      <inertia ixx="8.750000000000001e-05" ixy="0.0" ixz="0.0" iyy="5.089583333333334e-05" iyz="0.0" izz="5.089583333333334e-05" />
+    </inertial>
+  </link>
+  <joint name="thruster5" type="continuous">
+    <origin rpy="0 -1.5707963268 0" xyz="0.0025 -0.1105 -0.005" />
+    <axis xyz="1 0 0" />
+    <parent link="bluerov2_base_link" />
+    <child link="bluerov2_thruster5" />
+    <limits effort="-1" velocity="-1" />
+  </joint>
+  <link name="bluerov2_thruster6">
+    <visual>
+      <geometry>
+        <mesh filename="meshes/bluerov2_propccw.dae" />
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0175 0 0" />
+      <mass value="0.07" />
+      <inertia ixx="8.750000000000001e-05" ixy="0.0" ixz="0.0" iyy="5.089583333333334e-05" iyz="0.0" izz="5.089583333333334e-05" />
+    </inertial>
+  </link>
+  <joint name="thruster6" type="continuous">
+    <origin rpy="0 -1.5707963268 0" xyz="0.0025 0.1105 -0.005" />
+    <axis xyz="-1 0 0" />
+    <parent link="bluerov2_base_link" />
+    <child link="bluerov2_thruster6" />
+    <limits effort="-1" velocity="-1" />
+  </joint>
+  <link name="bluerov2_mpu" />
+  <joint name="mpu" type="fixed">
+    <origin rpy="0 0 -1.57079635" xyz="0.1 0 0" />
+    <parent link="bluerov2_base_link" />
+    <child link="bluerov2_mpu" />
+  </joint>
+  <link name="bluerov2_lsm" />
+  <joint name="lsm" type="fixed">
+    <origin rpy="0 0 -1.57079635" xyz="0.1 0 0" />
+    <parent link="bluerov2_base_link" />
+    <child link="bluerov2_lsm" />
+  </joint>
+  <link name="bluerov2_camera">
+    <inertial>
+      <mass value="0.015" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0" izz="0.001" />
+    </inertial>
+  </link>
+  <joint name="tilt" type="revolute">
+    <parent link="bluerov2_base_link" />
+    <child link="bluerov2_camera" />
+    <origin rpy="0 0 0" xyz="0.16999999999999998 0 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="100" lower="-1.0471975666666666" upper="1.0471975666666666" velocity="5.0" />
+    <dynamics damping="0.8" />
+  </joint>
+  <link name="bluerov2_camera_optical" />
+  <joint name="camera_optical" type="fixed">
+    <parent link="bluerov2_camera" />
+    <child link="bluerov2_camera_optical" />
+    <origin rpy="-1.57079635 0 -1.57079635" />
+  </joint>
+  <link name="bluerov2_sonar">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 -0.022" />
+      <geometry>
+        <mesh filename="meshes/ping360_sonar.dae" scale="0.01 0.01 0.01" />
+        /&gt;
+      
+      </geometry>
+    </visual>
+  </link>
+  <joint name="sonar" type="fixed">
+    <parent link="bluerov2_base_link" />
+    <child link="bluerov2_sonar" />
+    <origin xyz="0.135 0.108 0.118" />
+  </joint>
+</robot>

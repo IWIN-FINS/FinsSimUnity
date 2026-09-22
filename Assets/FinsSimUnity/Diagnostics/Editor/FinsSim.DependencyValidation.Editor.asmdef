@@ -1,0 +1,24 @@
+{
+    "name": "FinsSim.DependencyValidation.Editor",
+    "rootNamespace": "FinsSim.EditorValidation",
+    "references": [
+        "FinsSim.Platform",
+        "Unity.ML-Agents.CommunicatorObjects"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Google.Protobuf.dll",
+        "Google.Protobuf_Packed.dll",
+        "Grpc.Core.Api.dll",
+        "Grpc.Core.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

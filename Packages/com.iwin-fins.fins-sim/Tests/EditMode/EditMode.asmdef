@@ -1,0 +1,31 @@
+{
+    "name": "EditMode",
+    "rootNamespace": "FinsSim.Tests",
+    "references": [
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "FinsSim.Platform",
+        "FinsSim.Core",
+        "FinsSim.Diagnostics",
+        "PluginsAssembly",
+        "TestUtils"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Grpc.Core.Api.dll",
+        "Grpc.Core.dll",
+        "Google.Protobuf.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

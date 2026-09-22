@@ -1,0 +1,29 @@
+{
+    "name": "FinsSim.Tasks.TrajectoryTracking.Editor",
+    "rootNamespace": "FinsSim.Tasks.TrajectoryTracking.Editor",
+    "references": [
+        "FinsSim.Tasks",
+        "FinsSim.Tasks.PoseControl.Editor",
+        "FinsSim.Platform",
+        "FinsSim.Core",
+        "FinsSim.Diagnostics",
+        "Crest",
+        "PluginsAssembly",
+        "Unity.ML-Agents",
+        "Unity.ML-Agents.Input",
+        "Unity.InputSystem",
+        "Unity.Mathematics",
+        "Unity.RenderPipelines.HighDefinition.Runtime",
+        "Unity.RenderPipelines.HighDefinition.Editor",
+        "OpenSourceCloth"
+    ],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

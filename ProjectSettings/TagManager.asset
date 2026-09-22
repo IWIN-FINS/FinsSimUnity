@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags:
+  - robot
+  - Vehicle
+  - Ship
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Lidar
+  - 
+  - PostProcessing
+  - Not in Reflection
+  - Visualization
+  - 
+  - LidarBlackHole
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Lines
+    uniqueID: 1406210721
+    locked: 0
+  - name: Points
+    uniqueID: 1527757717
+    locked: 0
+  m_RenderingLayers:
+  - Default
+  - InteriorOnly
+  - ExteriorOnly
+  - LampsOnly
+  - ReflectionsOnly
+  - Light Layer 5
+  - Light Layer 6
+  - Light Layer 7
+  - Decal Layer default
+  - Decal Layer 1
+  - Decal Layer 2
+  - Decal Layer 3
+  - Decal Layer 4
+  - Decal Layer 5
+  - Decal Layer 6
+  - Decal Layer 7
